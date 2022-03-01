@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  String mytext = "A";
+
+  void _increment() {
+    setState(() {
+      mytext = mytext + "A";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,13 +37,13 @@ class Home extends StatelessWidget {
         ],
       ),
       // body is the majority of the screen.
-      body: const Center(
-        child: Text('Hello, world!'),
+      body: Center(
+        child: Text('Hello, world!, you say: $mytext'),
       ),
-      floatingActionButton: const FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         tooltip: 'Add', // used by assistive technologies
-        child: Icon(Icons.add),
-        onPressed: null,
+        child: const Icon(Icons.add),
+        onPressed: _increment,
       ),
     );
   }
