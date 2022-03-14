@@ -1,4 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import 'package:http/http.dart' as http;
+
+class IpMannager {
+  String ip = "";
+
+  IpMannager() {
+    getMyIp();
+  }
+
+  Future<void> getMyIp() async {
+    var res = await http.get(Uri.parse("https://api.ipify.org?format=json"));
+    var result = json.decode(res.body);
+    ip = result['ip'];
+  }
+}
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -8,11 +26,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String mytext = "A";
+  String currentIp = "No se bro";
+
+  var ip = IpMannager();
 
   void _increment() {
     setState(() {
-      mytext = mytext + "A";
+      ip.getMyIp();
+      currentIp = ip.ip + " Auto Doxeado Pa";
     });
   }
 
@@ -22,12 +43,7 @@ class _HomeState extends State<Home> {
     // the major Material Components.
     return Scaffold(
       appBar: AppBar(
-        leading: const IconButton(
-          icon: Icon(Icons.menu),
-          tooltip: 'Navigation menu',
-          onPressed: null,
-        ),
-        title: const Text('Login'),
+        title: const Text('Mi IP'),
         actions: const [
           IconButton(
             icon: Icon(Icons.search),
@@ -38,10 +54,17 @@ class _HomeState extends State<Home> {
       ),
       // body is the majority of the screen.
       body: Center(
-        child: Text('Hello, world!, you say: $mytext'),
+        child: Column(children: [
+          const Text("Tu IP es:"),
+          Text(currentIp),
+          TextButton(
+            child: const Text("Obtener mi IP"),
+            onPressed: _increment,
+          ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
-        tooltip: 'Add', // used by assistive technologies
+        tooltip: 'Obtener Ip', // used by assistive technologies
         child: const Icon(Icons.add),
         onPressed: _increment,
       ),
